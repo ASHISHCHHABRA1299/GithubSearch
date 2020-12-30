@@ -4,6 +4,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.bumptech.glide.Glide;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class PortfolioActivity extends AppCompatActivity {
 
@@ -23,12 +33,38 @@ public class PortfolioActivity extends AppCompatActivity {
         // to get the username from the mainactivity.java
         user=getIntent().getStringExtra("Username");
         url=url+user;
-
-
+        loaddata(url);
+        loadrepository(url);
     }
     // method to load the data
     public void loaddata(String url)
     {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            String imageurl=response.getString("avatar_url");
+                            String bioInfo=response.getString("bio");
+                            String followersc=response.getString("followers");
+                            String followingc=response.getString("following");
+                            follower.setText("FOLLOWERS: "+followersc);
+                            following.setText("FOLLOWING: "+followingc);
+                            bio.setText("BIO: "+bioInfo);
+                            // to set an image in the image view
+                            Glide.with(PortfolioActivity.this).load(imageurl).into(profile);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(PortfolioActivity.this, "Unable to fetch the data", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
 
     }
     // method to load the repositories
