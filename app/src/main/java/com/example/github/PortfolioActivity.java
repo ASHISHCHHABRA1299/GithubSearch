@@ -65,7 +65,8 @@ public class PortfolioActivity extends AppCompatActivity {
                     }
                 });
 
-
+        // Access the RequestQueue through your singleton class.
+        MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
     }
     // method to load the repositories
     public void loadrepository(String url)

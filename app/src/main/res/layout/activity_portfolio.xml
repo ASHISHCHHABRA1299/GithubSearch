@@ -54,4 +54,12 @@
             android:layout_marginLeft="90dp"
             />
     </LinearLayout>
-  </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+        android:background="#fff"
+        tools:listitem="@layout/repo_item"
+        />
+</LinearLayout>
